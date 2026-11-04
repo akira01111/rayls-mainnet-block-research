@@ -1,0 +1,10 @@
+{
+  "chain_id": 72957,
+  "endpoint": "https://mainnet-rpc.rayls.com",
+  "latest_block": 13817042,
+  "windows": 8,
+  "blocks_per_window": 20,
+  "stride": 6000,
+  "sampled_blocks": 160,
+  "method": "eight separated 20-block contiguous windows"
+}

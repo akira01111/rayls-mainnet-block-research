@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "chain_id": 72957,
+  "start_block": 13816689,
+  "end_block": 13817288,
+  "sampled_blocks": 600,
+  "active_blocks": 7,
+  "empty_blocks": 593,
+  "total_transactions": 8,
+  "duration_seconds": 805,
+  "median_interval_seconds": 1,
+  "observed_tps": 0.009937888198757764,
+  "csv_sha256": "e1032087049347fceb42b06566920a41b068a74bd47f99805b9f4fda47b7dd19"
+}
