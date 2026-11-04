@@ -1,48 +1,114 @@
-# Rayls Mainnet Block Activity — Independent Verification
+# Rayls Mainnet: Independent Block Activity Study
 
-Independent, read-only analysis of Rayls Public Chain mainnet.
+A reproducible, read-only study of transaction activity
+and block intervals on Rayls Public Chain.
+
+## Research question
+
+How fast is Rayls Public Chain in observed activity,
+and what can public onchain data actually prove?
 
 ## Network
+
 - Chain ID: 72957
 - RPC: https://mainnet-rpc.rayls.com/
-- Sample: Blocks 13816689 through 13817288
-- Date: November 4, 2026
+- Observation dates: September 28 to November 4, 2026
 
-## Observations
-- Blocks examined: 600
-- Active blocks: 7
-- Empty blocks: 593
-- Transactions: 8
-- Observation period: 805 seconds
-- Median block interval: 1 second
-- Observed throughput: approximately 0.00994 TPS
+## Verified results
 
-## Reproduce the Analysis
+| Window end | Blocks | Transactions | Empty blocks | Duration (s) | Observed TPS |
+|---|---:|---:|---:|---:|---:|
+| 11,000,000 | 600 | 19 | 593 | 414 | 0.04589 |
+| 12,000,000 | 600 | 14 | 597 | 797 | 0.01757 |
+| 13,000,000 | 600 | 6 | 597 | 809 | 0.00742 |
+| 13,817,288 | 600 | 8 | 593 | 805 | 0.00994 |
 
-Verify the archived dataset:
+Across four separate windows:
+- 2,400 blocks examined
+- 47 transactions recorded
+- 2,380 blocks with zero transactions
+- 99.17% of sampled blocks contained no transactions
+
+These are disjoint historical samples, not continuous
+monitoring or a statistically representative sample.
+
+## Method
+
+Each window consists of 600 consecutive EVM blocks
+selected by a fixed ending block number.
+
+Block data was retrieved using Ethereum JSON-RPC
+eth_getBlockByNumber.
+
+For each window, observed TPS is calculated as:
+
+Transactions in blocks 2 through 600
+divided by the timestamp difference between
+the final and first sampled blocks.
+
+This matches 599 measured timestamp intervals.
+
+The scripts verify:
+- Block-number continuity
+- Parent-hash linkage
+- CSV agreement with raw RPC responses
+- Transaction counts and recorded timestamps
+- Observed throughput calculations
+
+## Reproduce
+
+Verify the original sample:
 
     python3 verify_dataset.py
 
-Fetch the same block range again:
+Verify all four samples:
+
+    python3 windows/audit_all_windows.py
+
+Re-fetch the original fixed block range:
 
     python3 reproduce_fixed_600.py
 
-Compare both CSV files:
+Re-fetch historical windows:
 
-    sha256sum recent_600_blocks.csv reproduced_600_blocks.csv
+    python3 windows/fetch_11000000.py
+    python3 windows/fetch_12000000.py
+    python3 windows/fetch_13000000.py
 
-Expected original CSV SHA256:
+The file windows/comparison_summary.csv contains
+sample timestamps, measurements, and CSV SHA256 hashes.
 
-    e1032087049347fceb42b06566920a41b068a74bd47f99805b9f4fda47b7dd19
+## Interpretation and limitations
 
-## Important Limitations
+Observed throughput is not maximum network capacity.
 
-Observed throughput measures transaction activity within the sampled period.
+A block with zero entries in its transaction array
+does not imply consensus inactivity.
 
-It does not measure maximum network capacity.
+Block timestamp intervals are not direct measurements
+of transaction finality.
 
-Block timestamp intervals do not independently establish consensus finality.
+These samples cannot establish network-wide usage trends,
+peak TPS, validator performance, or consensus latency.
 
-This dataset represents one historical period, not all Rayls network activity.
+No transactions, wallet signatures, or private keys
+were required.
 
-All RPC requests are read-only. No wallet or transaction is required.
+## Official references
+
+Rayls Public Chain:
+https://docs.rayls.com/docs/a-warm-intro-do-rayls-public-chain
+
+Axyl benchmarks:
+https://docs.rayls.com/docs/axyl-performance-benchmarks
+
+Axyl source:
+https://github.com/raylsnetwork/axyl
+
+## Axyl source snapshot
+
+Reviewed source revision: `bb8ac6ddef4cf0b73aa109703a10c6be5d579a7f`
+
+[Execution overview](https://github.com/raylsnetwork/axyl/blob/bb8ac6ddef4cf0b73aa109703a10c6be5d579a7f/doc/crates/execution/overview.md)
+
+This identifies a public source-code revision; it does not prove which binary was deployed on mainnet.

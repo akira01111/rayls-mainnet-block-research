@@ -1,0 +1,12 @@
+{
+  "chain_id": 72957,
+  "rpc": "https://mainnet-rpc.rayls.com",
+  "sample_method": "600 consecutive historical blocks at a fixed height",
+  "start_block": 10999401,
+  "end_block": 11000000,
+  "total_transactions": 19,
+  "active_blocks": 7,
+  "elapsed_seconds": 414,
+  "observed_tps": 0.04589371980676329,
+  "retrieved_at_utc": "2026-11-04T09:35:54.944896+00:00"
+}
